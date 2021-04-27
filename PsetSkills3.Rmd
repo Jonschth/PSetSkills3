@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(tibble)
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+```
+
+
+1
+glimpse(gapminder)
+
+1.a
+
+```{r}
+gapminder %>% 
+  group_by(country)
+
+  
+gapminder%>%
+  arrange(country)%>%
+  select(country, year,gdp)%>%
+  mutate(previous_year_gdp= lag(gdp, order_by = country))
+  #group_by(country,gdp,previous_year_value) 
+  
+#    summarise(count=n()) %>%
+#  mutate(percent = count/sum(count))
+```
+
+
+
+
