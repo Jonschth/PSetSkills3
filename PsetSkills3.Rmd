@@ -18,20 +18,23 @@ glimpse(gapminder)
 1.a
 
 ```{r}
-gapminder %>% 
-  group_by(country)
-
-  
 gapminder%>%
   arrange(country)%>%
   select(country, year,gdp)%>%
   mutate(previous_year_gdp= lag(gdp, order_by = country))
-  #group_by(country,gdp,previous_year_value) 
-  
-#    summarise(count=n()) %>%
-#  mutate(percent = count/sum(count))
 ```
 
 
 
+1.b
+
+```{r}
+gapminder%>%
+  arrange(continent)%>%
+  select(continent, year,gdp)%>%
+  mutate(previous_year_gdp= lag(gdp, order_by = continent))%>%
+  group_by(continent, year) %>%
+  summarise_at(vars(gdp, previous_year_gdp),sum,na.rm=TRUE)%>%
+  mutate(change=gdp/previous_year_gdp-1)
+```
 
