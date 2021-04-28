@@ -9,6 +9,7 @@ library(tibble)
 library(dplyr)
 library(ggplot2)
 library(dslabs)
+library(scales)
 ```
 
 
@@ -28,12 +29,32 @@ gapminder%>%
 
 1.b
 
+
+
 ```{r}
 gapminder%>%
   select(continent, year,gdp)%>%
-  mutate(previous_year_gdp= lag(gdp, order_by = continent))%>%
   group_by(continent, year) %>%
-  summarise_at(vars(gdp, previous_year_gdp),sum,na.rm=TRUE)%>%
-  mutate(change=gdp/previous_year_gdp-1)
+  summarise_at(vars(gdp),sum,na.rm=TRUE)%>%
+  mutate(previous_year_gdp= lag(gdp))%>%
+  mutate(change=(gdp/previous_year_gdp-1))
+```
+
+
+
+
+```{r}
+
+glimpse(gapminder)
+
+gapminder%>%
+  select(continent, year,gdp)%>%
+  group_by(continent, year) %>%
+  summarise_at(vars(gdp),sum,na.rm=TRUE)%>%
+  mutate(previous_year_gdp= lag(gdp))%>%
+  mutate(change=(gdp/previous_year_gdp-1))%>%
+  ggplot(aes(x=year,y=change,group=continent,color=continent))+
+  geom_line()+
+  scale_y_continuous(name="Annual GDP change", limits=c(-0.05,0.1))
 ```
 
