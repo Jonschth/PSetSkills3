@@ -57,4 +57,19 @@ gapminder%>%
   geom_line()+
   scale_y_continuous(name="Annual GDP change", limits=c(-0.05,0.1))
 ```
+1.2
+
+```{r}
+gapminder %>%
+  arrange(country)%>%
+  select(country, year,gdp,region)%>%
+  mutate(py_gdp = lag(gdp))%>%
+  mutate(growth=gdp/py_gdp-1)%>%
+  group_by(region)%>%
+  mutate(mgr=mean(growth,na.rm=TRUE))%>%
+  mutate(diff = growth-mgr )%>%
+  arrange(diff)
+
+  
+```
 
