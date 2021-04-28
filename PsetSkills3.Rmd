@@ -30,7 +30,6 @@ gapminder%>%
 
 ```{r}
 gapminder%>%
-  arrange(continent)%>%
   select(continent, year,gdp)%>%
   mutate(previous_year_gdp= lag(gdp, order_by = continent))%>%
   group_by(continent, year) %>%
