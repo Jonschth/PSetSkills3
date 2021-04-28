@@ -57,7 +57,7 @@ gapminder%>%
   geom_line()+
   scale_y_continuous(name="Annual GDP change", limits=c(-0.05,0.1))
 ```
-1.2
+1.1.2
 
 ```{r}
 gapminder %>%
