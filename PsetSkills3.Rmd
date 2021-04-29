@@ -91,12 +91,20 @@ gapminder %>%
 ```
 1.2.1
 
+1.2.1.1
 
 ```{r}
 gapminder%>%
   filter(country=='China')
 
   ggplot(gapminder, aes(x=infant_mortality))+
+  geom_histogram(binwidth = 1)
+              
+```
+1.2.1.2.a
+```{r}
+
+  ggplot(gapminder, aes(x=life_expectancy))+
   geom_histogram(binwidth = 1)
               
 ```
