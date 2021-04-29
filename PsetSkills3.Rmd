@@ -91,21 +91,90 @@ gapminder %>%
 ```
 1.2.1
 
-1.2.1.1
+1.2.1.1.a&b
 
 ```{r}
 gapminder%>%
   filter(country=='China')
 
   ggplot(gapminder, aes(x=infant_mortality))+
-  geom_histogram(binwidth = 1)
+  geom_histogram(binwidth = 3)
               
 ```
 1.2.1.2.a
 ```{r}
 
   ggplot(gapminder, aes(x=life_expectancy))+
-  geom_histogram(binwidth = 1)
+  geom_histogram(binwidth = 3)
               
 ```
+1.2.1.2.b
+```{r}
+gapminder %>%
+  select(country, year,life_expectancy)%>%
+  group_by(country,year)%>%
+  mutate(bool_var = life_expectancy<40,na.rm=TRUE)%>%
+  group_by(country)%>%
+  summarise(summa=sum(bool_var,na.rm = TRUE))%>%
+  arrange(desc(summa))%>%
+  mutate(n1=sum(summa,na.rm=TRUE))
+```
+```{r}
+gapminder %>%
+  select(country, year,life_expectancy)%>%
+  group_by(country,year)%>%
+  mutate(bool_var = life_expectancy>80,na.rm=TRUE)%>%
+  group_by(country)%>%
+  summarise(summa=sum(bool_var,na.rm = TRUE))%>%
+  arrange(desc(summa))%>%
+  mutate(n1=sum(summa))
+```
+
+1.2.1.3
+
+1.2.1.2.a
+
+You probably want to use coord_cartesian instead of lims. Unexpected things can happen when you're fiddling around with the limits on histograms, because a fair bit of fiddly transformations have to happen to get from your raw data to the actual histogram.
+
+So now you're wondering, how the heck did that happen, right?
+
+Well, when you tell ggplot that you want 10 bins and the x limits go from 86 to 195, the histogram algorithm tries to create ten bins that span that actual range. That's why it's trying to create bins down below 100 even though there's no data there.
+
+And then further oddities can happen because the bars may extend past the nominal data range (the xmin and xmax values), since the bar widths will generally encompass a little above and a little below your actual data at the high and low ends.
+
+coord_cartesian will adjust the x limits after all this processing has happened, so it bypasses all these little quirks.
+```{r}
+
+  ggplot(gapminder, aes(x=life_expectancy))+
+  geom_histogram(binwidth = 1)+
+    coord_cartesian(
+      xlim = c(40,60),
+      ylim = c(0,200),
+      expand = TRUE,
+      default = FALSE,
+      clip = "on"
+)
+
+              
+```
+
+
+```{r}
+1.2.2.1
+
+  ggplot(gapminder, aes(x=life_expectancy))+
+  geom_bar()+
+    coord_cartesian(
+      xlim = c(40,40.5),
+      ylim = c(0,4),
+      expand = TRUE,
+      default = FALSE,
+      clip = "on"
+)
+```
+1.2.2.2
+if you sum over a column with na result is na
+if you take a mean over  a column with ne the result is na
+
+you can fix by using (,na.rm=TRUE)
 
