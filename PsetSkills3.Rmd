@@ -145,11 +145,11 @@ And then further oddities can happen because the bars may extend past the nomina
 coord_cartesian will adjust the x limits after all this processing has happened, so it bypasses all these little quirks.
 ```{r}
 
-  ggplot(gapminder, aes(x=life_expectancy))+
+  ggplot(gapminder, aes(x=life_expectancy,na.rm=FALSE))+
   geom_histogram(binwidth = 1)+
     coord_cartesian(
-      xlim = c(40,60),
-      ylim = c(0,200),
+      xlim = c(10,80),
+      ylim = c(0,400),
       expand = TRUE,
       default = FALSE,
       clip = "on"
@@ -157,16 +157,16 @@ coord_cartesian will adjust the x limits after all this processing has happened,
 
               
 ```
-
-
-```{r}
 1.2.2.1
 
-  ggplot(gapminder, aes(x=life_expectancy))+
+```{r}
+
+
+  ggplot(gapminder, aes(x=life_expectancy,na.rm=FALSE))+
   geom_bar()+
     coord_cartesian(
       xlim = c(40,40.5),
-      ylim = c(0,4),
+      ylim = c(0,3),
       expand = TRUE,
       default = FALSE,
       clip = "on"
@@ -177,4 +177,9 @@ if you sum over a column with na result is na
 if you take a mean over  a column with ne the result is na
 
 you can fix by using (,na.rm=TRUE)
+
+
+2.1
+
+glimpse(diamonds)
 
