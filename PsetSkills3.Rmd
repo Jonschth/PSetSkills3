@@ -10,6 +10,20 @@ library(dplyr)
 library(ggplot2)
 library(dslabs)
 library(scales)
+
+install.packages("QuantPsyc")
+install.packages("MASS")
+install.packages("data.table")
+install.packages("tidyr")
+install.packages("GGally")
+
+library(QuantPsyc)
+library(MASS)
+library(data.table)
+library(tidyr)
+library(GGally)
+
+
 ```
 
 
