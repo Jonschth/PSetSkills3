@@ -84,15 +84,17 @@ gapminder %>%
 
 ```{r}
 gapminder %>%
-  arrange(country)%>%
   select(country, year,gdp,region)%>%
+  group_by(country)%>%
   mutate(py_gdp = lag(gdp))%>%
-  mutate(growth=gdp/py_gdp-1)%>%
+  mutate(growth=gdp/py_gdp-1,na.rm=TRUE)%>%
   group_by(region)%>%
   mutate(mgr=mean(growth,na.rm=TRUE))%>%
-  mutate(count_bool = growth>mgr)%>%
-  mutate(count=n())%>%
-  arrange(count)
+  mutate(bool_var = growth>mgr,na.rm=TRUE)%>%
+  group_by(country)%>%
+  summarise(summa=sum(bool_var,na.rm = TRUE))%>%
+  arrange(desc(summa))
+
 
 
 ```
