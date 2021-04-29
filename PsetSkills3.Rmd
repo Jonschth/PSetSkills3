@@ -71,16 +71,7 @@ gapminder %>%
   arrange(diff)
 ```
 1.1.3
-```gapminder%>%
-  select(continent, year,gdp)%>%
-  group_by(continent, year) %>%
-  summarise_at(vars(gdp),sum,na.rm=TRUE)%>%
-  mutate(previous_year_gdp= lag(gdp))%>%
-  mutate(change=(gdp/previous_year_gdp-1))%>%
-  ggplot(aes(x=year,y=change,group=continent,color=continent))+
-  geom_line()+
-  scale_y_continuous(name="Annual GDP change", limits=c(-0.05,0.1))
-```
+
 
 ```{r}
 gapminder %>%
@@ -97,5 +88,16 @@ gapminder %>%
 
 
 
+```
+1.2.1
+
+
+```{r}
+gapminder%>%
+  filter(country=='China')
+
+  ggplot(gapminder, aes(x=infant_mortality))+
+  geom_histogram(binwidth = 1)
+              
 ```
 
