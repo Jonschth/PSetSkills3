@@ -248,22 +248,21 @@ This is best seen by noting that the correlation between carats and price is ver
 2.2.a
 
 ```{r}
-color_dist<-
-  count(diamonds, color,cut)%>%
-  group_by(color,cut)
+color_cut<-
+  count(diamonds, color,cut)
   
-color_dist
+color_cut
 
 ```
 2.2.b
 
   
 ```{r}
-cut_dist<-
+cut_color<-
   count(diamonds, cut, color)%>%
   group_by(cut,color)
   
-cut_dist
+cut_color
 ```
   
 2.2.c
@@ -274,8 +273,73 @@ cut_dist
 
 
 ```{r}
-ggplot(cut_dist,(aes(x=color)))+
-  geom_bar()+
+ggplot(data=diamonds,aes(x=color, group=cut))+
+  geom_bar(aes(y=..prop..),stat="count")+
   facet_wrap(~cut)
+
 ```
 
+2.3 (þetta átti ekki að gera svona)
+
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) + 
+  geom_boxplot(mapping = aes(group = cut_width(carat, 0.3)))
+```
+
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) + 
+  geom_boxplot(mapping = aes(group = cut_number(carat, 20)))
+```
+
+2.3.a
+```{r}
+ggplot(data = diamonds, mapping = aes(x = price, y = ..density..)) + 
+  geom_freqpoly(mapping = aes(colour = cut_width(carat, 1)), binwidth = 500)
+```
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = price, y = ..density..)) + 
+  geom_freqpoly(mapping = aes(colour = cut_number(carat, 5)), binwidth = 500)
+```
+
+
+
+2.4
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_point(mapping = aes(x = carat, y = price), alpha = 1 / 100)
+```
+2.5
+
+2.6
+
+  
+```{r}
+ggplot(data = diamonds) + 
+  geom_point(mapping = aes(x = carat, y = price), alpha = 1 / 100)+
+  facet_wrap(~cut)
+```
+  
+
+2.7
+
+```{r}
+ggplot(data = diamonds) +
+geom_point(mapping = aes(x = x, y = y)) +
+coord_cartesian(xlim = c(4, 11), ylim = c(4, 11))
+
+
+```
+This is a very good way to see the outliers as the points may appear to normal when looked at seperately as x or y, but the x,y combination shows that they are outliers.
+
+
+```{r}
+ggplot(data = diamonds) +
+geom_bin2d(mapping = aes(x = x, y = y)) +
+coord_cartesian(xlim = c(4, 11), ylim = c(4, 11))
+
+```
+Although the above picture shows that the range of the bins on the y and x axes is substantial it does not really show us where the outliers are. For example at 9-10 carats there are hardly any outliers and the relathinship is almost x=y (lenght = width) this is not easy to see from the binned plot
