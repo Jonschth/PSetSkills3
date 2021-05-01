@@ -322,6 +322,10 @@ ggplot(data = diamonds) +
   geom_point(mapping = aes(x = carat, y = price), alpha = 1 / 100)+
   facet_wrap(~cut)
 ```
+```{r}
+ggplot(data = diamonds) + 
+  geom_point(mapping = aes(x = carat, y = price,color=cut), alpha = 1 / 100)
+```
   
 
 2.7
