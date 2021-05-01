@@ -324,7 +324,7 @@ ggplot(data = diamonds) +
 ```
 ```{r}
 ggplot(data = diamonds) + 
-  geom_point(mapping = aes(x = carat, y = price,color=cut), alpha = 1 / 100)
+  geom_point(mapping = aes(x = carat, y = price, color=cut), alpha = .3)
 ```
   
 
