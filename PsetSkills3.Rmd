@@ -11,11 +11,6 @@ library(ggplot2)
 library(dslabs)
 library(scales)
 
-install.packages("QuantPsyc")
-install.packages("MASS")
-install.packages("data.table")
-install.packages("tidyr")
-install.packages("GGally")
 
 library(QuantPsyc)
 library(MASS)
@@ -199,8 +194,88 @@ glimpse(diamonds)
 
 
 ```{r}
+
+glimpse(diamonds)
 summary(diamonds)
 ggpairs(diamonds)
+
 ```
-ggpairs(diamonds)
+
+1.a It is the carat (the weight), the heavier the diamond, the more valuable it is.  There is a strong correlation, 0,922. (x,y,and z) are also strongly correlated to carat as the are the dimensions of the diamond and the bigger they are the heavier it is)
+
+1.b
+To show the relationship between price and cut we can look at the quantiles:
+```{r}
+diamonds %>%
+  group_by(cut) %>%
+  summarise(n=n(), 
+            mean= mean(price), 
+            median=median(price), 
+            Q1= quantile(price,0.25),
+            Q3= quantile(price,0.75))
+```
+It should be noted that the weight distribution is very different for different cuts.  Therefore the 
+
+```{r}
+
+
+    
+cor(as.integer(diamonds$cut),diamonds$price)
+
+diamonds%>%
+  group_by(cut)%>%
+  mutate(icut=as.integer(cut))
+
+
+glimpse(diamonds)
+```
+2.1.b
+
+```{r}
+cor(as.integer(diamonds$cut),diamonds$price)
+```
+2.1.c. fair = 1, Good = 2, Very good = 3, Premium = 4 and Ideal = 5
+2.1.c shows the there is very l.ow negative correlation between the cut and the price of diamonds.  This is because the weight/carat is far more important than the cut
+
+```{r}
+
+cor(diamonds$carat,diamonds$price)
+
+```
+This is best seen by noting that the correlation between carats and price is very high or posititve 0.92.
+
+
+2.2.a
+
+```{r}
+color_dist<-
+  count(diamonds, color,cut)%>%
+  group_by(color,cut)
+  
+color_dist
+
+```
+2.2.b
+
+  
+```{r}
+cut_dist<-
+  count(diamonds, cut, color)%>%
+  group_by(cut,color)
+  
+cut_dist
+```
+  
+2.2.c
+
+
+
+
+
+
+```{r}
+ggplot(cut_dist,(aes(x=color)))+
+  geom_bar()+
+  facet_wrap(~cut)
+```
 
