@@ -10,15 +10,11 @@ library(dplyr)
 library(ggplot2)
 library(dslabs)
 library(scales)
-
-
 library(QuantPsyc)
 library(MASS)
 library(data.table)
 library(tidyr)
 library(GGally)
-
-
 ```
 
 
@@ -30,7 +26,7 @@ glimpse(gapminder)
 ```{r}
 gapminder%>%
   arrange(country)%>%
-  select(country, year,gdp)%>%
+  dplyr::select(country, year,gdp)%>%
   mutate(previous_year_gdp= lag(gdp, order_by = country))
 ```
 
@@ -42,7 +38,7 @@ gapminder%>%
 
 ```{r}
 gapminder%>%
-  select(continent, year,gdp)%>%
+  dplyr::select(continent, year,gdp)%>%
   group_by(continent, year) %>%
   summarise_at(vars(gdp),sum,na.rm=TRUE)%>%
   mutate(previous_year_gdp= lag(gdp))%>%
@@ -57,7 +53,7 @@ gapminder%>%
 glimpse(gapminder)
 
 gapminder%>%
-  select(continent, country,year,gdp)%>%
+  dplyr::select(continent, country,year,gdp)%>%
   group_by(country)%>%
   mutate(previous_year_gdp= lag(gdp),change=(gdp/previous_year_gdp-1))%>%
   group_by(continent, year) %>%
@@ -71,7 +67,7 @@ gapminder%>%
 ```{r}
 gapminder %>%
   arrange(country)%>%
-  select(country, year,gdp,region)%>%
+  dplyr::select(country, year,gdp,region)%>%
   mutate(py_gdp = lag(gdp))%>%
   mutate(growth=gdp/py_gdp-1)%>%
   group_by(region)%>%
@@ -86,7 +82,7 @@ gapminder %>%
 
 ```{r}
 gapminder %>%
-  select(country, year,gdp,region)%>%
+  dplyr::select(country, year,gdp,region)%>%
   group_by(country)%>%
   mutate(py_gdp = lag(gdp))%>%
   mutate(growth=gdp/py_gdp-1,na.rm=TRUE)%>%
@@ -96,20 +92,18 @@ gapminder %>%
   group_by(country)%>%
   summarise(summa=sum(bool_var,na.rm = TRUE))%>%
   arrange(desc(summa))
-
-
-
 ```
+
 1.2.1
 
 1.2.1.1.a&b
 
 ```{r}
 gapminder%>%
-  select(country,year,infant_mortality)%>%
+  dplyr::select(country,year,infant_mortality)%>%
   filter (country=="China")%>%
   ggplot( aes(x=infant_mortality))+
-  geom_histogram(binwidth = 3)
+  geom_histogram(binwidth = 10)
               
 ```
 1.2.1.2.a
@@ -122,7 +116,7 @@ gapminder%>%
 1.2.1.2.b
 ```{r}
 gapminder %>%
-  select(country, year,life_expectancy)%>%
+  dplyr::select(country, year,life_expectancy)%>%
   group_by(country,year)%>%
   mutate(bool_var = life_expectancy<40,na.rm=TRUE)%>%
   group_by(country)%>%
@@ -132,7 +126,7 @@ gapminder %>%
 ```
 ```{r}
 gapminder %>%
-  select(country, year,life_expectancy)%>%
+  dplyr::select(country, year,life_expectancy)%>%
   group_by(country,year)%>%
   mutate(bool_var = life_expectancy>80,na.rm=TRUE)%>%
   group_by(country)%>%
@@ -157,8 +151,8 @@ coord_cartesian will adjust the x limits after all this processing has happened,
   ggplot(gapminder, aes(x=life_expectancy,na.rm=FALSE))+
   geom_histogram(binwidth = 1)+
     coord_cartesian(
-      xlim = c(10,80),
-      ylim = c(0,400),
+      xlim = c(10,90),
+      ylim = c(0,500),
       expand = TRUE,
       default = FALSE,
       clip = "on"
@@ -172,7 +166,7 @@ coord_cartesian will adjust the x limits after all this processing has happened,
 
 
   ggplot(gapminder, aes(x=life_expectancy,na.rm=FALSE))+
-  geom_bar()+
+  geom_bar(bins=10)+
     coord_cartesian(
       xlim = c(40,40.5),
       ylim = c(0,3),
@@ -190,14 +184,17 @@ you can fix by using (,na.rm=TRUE)
 
 2.1
 
-glimpse(diamonds)
+
 
 
 ```{r}
 
 glimpse(diamonds)
 summary(diamonds)
-ggpairs(diamonds)
+
+ggpairs(diamonds,progress=FALSE, binwidth=500)
+
+
 
 ```
 
